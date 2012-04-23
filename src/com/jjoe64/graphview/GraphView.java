@@ -97,13 +97,16 @@ abstract public class GraphView extends LinearLayout {
 					paint.setTextAlign(Align.RIGHT);
 				if (i==0)
 					paint.setTextAlign(Align.LEFT);
-				paint.setColor(Color.WHITE);
+				paint.setColor(Color.BLACK);
 				canvas.drawText(horlabels[i], x, height - 4, paint);
 			}
 
 			paint.setTextAlign(Align.CENTER);
+			float textSize = paint.getTextSize();
+			paint.setTextSize(textSize+10);
 			canvas.drawText(title, (graphwidth / 2) + horstart, border - 4, paint);
-
+			paint.setTextSize(textSize);
+			
 			if (maxY != minY) {
 				paint.setStrokeCap(Paint.Cap.ROUND);
 				paint.setStrokeWidth(3);
@@ -245,7 +248,7 @@ abstract public class GraphView extends LinearLayout {
 			int vers = verlabels.length - 1;
 			for (int i = 0; i < verlabels.length; i++) {
 				float y = ((graphheight / vers) * i) + border;
-				paint.setColor(Color.WHITE);
+				paint.setColor(Color.BLACK);
 				canvas.drawText(verlabels[i], 0, y, paint);
 			}
 		}
@@ -267,9 +270,11 @@ abstract public class GraphView extends LinearLayout {
 	private float legendWidth = 120;
 	private LegendAlign legendAlign = LegendAlign.MIDDLE;
 	private boolean manualYAxis;
+	private boolean manualYMinAxis;
+	private boolean manualYMaxAxis;
 	private double manualMaxYValue;
 	private double manualMinYValue;
-
+	
 	/**
 	 *
 	 * @param context
@@ -453,7 +458,7 @@ abstract public class GraphView extends LinearLayout {
 
 	private double getMaxY() {
 		double largest;
-		if (manualYAxis) {
+		if (manualYAxis || manualYMaxAxis) {
 			largest = manualMaxYValue;
 		} else {
 			largest = Integer.MIN_VALUE;
@@ -490,7 +495,7 @@ abstract public class GraphView extends LinearLayout {
 
 	private double getMinY() {
 		double smallest;
-		if (manualYAxis) {
+		if (manualYAxis || manualYMinAxis) {
 			smallest = manualMinYValue;
 		} else {
 			smallest = Integer.MAX_VALUE;
@@ -535,6 +540,8 @@ abstract public class GraphView extends LinearLayout {
 	 */
 	public void setManualYAxis(boolean manualYAxis) {
 		this.manualYAxis = manualYAxis;
+		this.manualYMaxAxis = manualYAxis;
+		this.manualYMinAxis = manualYAxis;
 	}
 
 	/**
@@ -546,6 +553,16 @@ abstract public class GraphView extends LinearLayout {
 		manualMaxYValue = max;
 		manualMinYValue = min;
 		manualYAxis = true;
+	}
+	
+	public void setManualYAxisMinBounds(double min) {
+		manualMinYValue = min;
+		manualYMinAxis = true;
+	}
+	
+	public void setManualYAxisMaxBounds(double max) {
+		manualMaxYValue = max;
+		manualYMaxAxis = true;
 	}
 
 	/**

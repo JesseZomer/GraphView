@@ -15,6 +15,7 @@ import android.graphics.Paint;
 public class LineGraphView extends GraphView {
 	private final Paint paintBackground;
 	private boolean drawBackground;
+	
 
 	public LineGraphView(Context context, String title) {
 		super(context, title);
