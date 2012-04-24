@@ -155,7 +155,7 @@ abstract public class GraphView extends LinearLayout {
 			// first scale
 			if (scalable && scaleDetector != null) {
 				scaleDetector.onTouchEvent(event);
-				handled = scaleDetector.isInProgress();
+				handled = false;//scaleDetector.isInProgress();
 			}
 			if (!handled) {
 				// if not scaled, scroll
