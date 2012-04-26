@@ -2,6 +2,7 @@ package com.jjoe64.graphview;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 
 /**
@@ -15,7 +16,9 @@ import android.graphics.Paint;
 public class LineGraphView extends GraphView {
 	private final Paint paintBackground;
 	private boolean drawBackground;
+	private boolean paintSelectedValue;
 	
+	private int selectedValue;
 
 	public LineGraphView(Context context, String title) {
 		super(context, title);
@@ -23,6 +26,17 @@ public class LineGraphView extends GraphView {
 		paintBackground = new Paint();
 		paintBackground.setARGB(255, 20, 40, 60);
 		paintBackground.setStrokeWidth(4);
+	}
+	
+	public LineGraphView(Context context, String title, int selectedValue) {
+		super(context, title);
+
+		paintBackground = new Paint();
+		paintBackground.setARGB(255, 20, 40, 60);
+		paintBackground.setStrokeWidth(4);
+		
+		this.selectedValue = selectedValue;
+		this.paintSelectedValue = true;
 	}
 
 	@Override
@@ -85,6 +99,17 @@ public class LineGraphView extends GraphView {
 				float endY = (float) (border - y) + graphheight;
 
 				canvas.drawLine(startX, startY, endX, endY, paint);
+				
+				if(paintSelectedValue && i == selectedValue){
+										
+					int curColor = paint.getColor();
+					paint.setColor(Color.RED);
+					canvas.drawCircle(startX, startY, 4, paint);
+					paint.setColor(curColor);
+				}
+	
+
+
 			}
 			lastEndY = y;
 			lastEndX = x;
@@ -101,4 +126,14 @@ public class LineGraphView extends GraphView {
 	public void setDrawBackground(boolean drawBackground) {
 		this.drawBackground = drawBackground;
 	}
+	
+	public void setSelectedValue(int selectedValue) {
+		this.selectedValue = selectedValue;
+		this.paintSelectedValue = true;
+	}
+	
+	public void setPaintSelectedValue(boolean paintSelectedValue) {
+		this.paintSelectedValue = paintSelectedValue;
+	}
+	
 }
